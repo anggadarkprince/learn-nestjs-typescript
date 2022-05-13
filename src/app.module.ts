@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {PostsModule} from "./posts/posts.module";
@@ -12,6 +13,18 @@ import { AuthenticationModule } from './authentication/authentication.module';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
+      validationSchema: Joi.object({
+        DB_HOST: Joi.string().required(),
+        DB_PORT: Joi.number().required(),
+        DB_USERNAME: Joi.string().required(),
+        DB_PASSWORD: Joi.string().empty(''),
+        DB_DATABASE: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().required(),
+      }),
+      validationOptions: {
+        abortEarly: true,
+      },
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
