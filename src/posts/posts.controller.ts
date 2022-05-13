@@ -3,6 +3,7 @@ import PostsService from './posts.service';
 import CreatePostDto from './dto/create-post.dto';
 import UpdatePostDto from './dto/update-post.dto';
 import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.guard";
+import FindOneParams from "../utils/find-one-params";
 
 @Controller('posts')
 @UseGuards(JwtAuthenticationGuard)
@@ -17,7 +18,7 @@ export default class PostsController {
     }
 
     @Get(':id')
-    getPostById(@Param('id') id: string) {
+    getPostById(@Param() { id }: FindOneParams) {
         return this.postsService.getPostById(Number(id));
     }
 
@@ -27,12 +28,12 @@ export default class PostsController {
     }
 
     @Put(':id')
-    async replacePost(@Param('id') id: string, @Body() post: UpdatePostDto) {
+    async replacePost(@Param() { id }: FindOneParams, @Body() post: UpdatePostDto) {
         return this.postsService.updatePost(Number(id), post);
     }
 
     @Delete(':id')
-    async deletePost(@Param('id') id: string) {
+    async deletePost(@Param() { id }: FindOneParams) {
         return this.postsService.deletePost(Number(id));
     }
 }
