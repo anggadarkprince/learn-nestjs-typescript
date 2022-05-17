@@ -1,6 +1,6 @@
 import {IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength} from "class-validator";
 
-export class UpdatePostDto {
+class UpdatePostDto {
   @IsNumber()
   @IsOptional()
   id: number;

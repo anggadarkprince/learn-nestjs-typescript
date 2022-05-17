@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
-  // Serialization: that uses class-transformer under the hood
+  // Serialization: that uses class-transformer under the hood @UseInterceptors(ClassSerializerInterceptor)
   app.useGlobalInterceptors(new ClassSerializerInterceptor(
       app.get(Reflector))
   );

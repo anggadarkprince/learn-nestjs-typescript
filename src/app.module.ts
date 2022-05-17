@@ -2,11 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {PostsModule} from "./posts/posts.module";
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -40,11 +42,13 @@ import { AuthenticationModule } from './authentication/authentication.module';
         //entities: [__dirname + '/../**/*.entity{.ts,.js}', 'dist/**/*.entity.js'],
         autoLoadEntities: true,
         synchronize: true,
+        namingStrategy: new SnakeNamingStrategy()
       })
     }),
     PostsModule,
     UsersModule,
-    AuthenticationModule
+    AuthenticationModule,
+    CategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService],

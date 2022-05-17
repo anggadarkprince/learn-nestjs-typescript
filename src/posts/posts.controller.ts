@@ -1,12 +1,25 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
+import {
+    Body,
+    ClassSerializerInterceptor,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+    Req,
+    UseGuards,
+    UseInterceptors
+} from '@nestjs/common';
 import PostsService from './posts.service';
 import CreatePostDto from './dto/create-post.dto';
 import UpdatePostDto from './dto/update-post.dto';
 import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.guard";
 import FindOneParams from "../utils/find-one-params";
+import RequestWithUser from "../authentication/interfaces/request-with-user.interface";
 
 @Controller('posts')
-@UseGuards(JwtAuthenticationGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 export default class PostsController {
     constructor(
         private readonly postsService: PostsService
@@ -23,16 +36,19 @@ export default class PostsController {
     }
 
     @Post()
-    async createPost(@Body() post: CreatePostDto) {
-        return this.postsService.createPost(post);
+    @UseGuards(JwtAuthenticationGuard)
+    async createPost(@Body() post: CreatePostDto, @Req() req: RequestWithUser) {
+        return this.postsService.createPost(post, req.user);
     }
 
     @Put(':id')
-    async replacePost(@Param() { id }: FindOneParams, @Body() post: UpdatePostDto) {
+    @UseGuards(JwtAuthenticationGuard)
+    async updatePost(@Param() { id }: FindOneParams, @Body() post: UpdatePostDto) {
         return this.postsService.updatePost(Number(id), post);
     }
 
     @Delete(':id')
+    @UseGuards(JwtAuthenticationGuard)
     async deletePost(@Param() { id }: FindOneParams) {
         return this.postsService.deletePost(Number(id));
     }
