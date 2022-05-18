@@ -10,6 +10,7 @@ import {
 import {Exclude} from "class-transformer";
 import Address from "./address.entity";
 import Post from "../../posts/post.entity";
+import PublicFile from "../../files/entities/public-file.entity";
 
 @Entity({name: 'users'})
 class User {
@@ -28,6 +29,13 @@ class User {
 
     @Column({ name: "phone_number", nullable: true })
     public phoneNumber?: string;
+
+    @JoinColumn()
+    @OneToOne(() => PublicFile, {
+        eager: true,
+        nullable: true
+    })
+    public avatar?: PublicFile;
 
     @OneToOne(() => Address, {
         eager: true, // duplicate alias relation address_id need to be change another or using strategy

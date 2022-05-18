@@ -9,6 +9,7 @@ import {PostsModule} from "./posts/posts.module";
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { CategoriesModule } from './categories/categories.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -23,6 +24,11 @@ import { CategoriesModule } from './categories/categories.module';
         DB_DATABASE: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
+        S3_ENDPOINT: Joi.string().empty(''),
+        S3_DEFAULT_REGION: Joi.string().required(),
+        S3_ACCESS_KEY_ID: Joi.string().required(),
+        S3_SECRET_ACCESS_KEY: Joi.string().required(),
+        S3_BUCKET: Joi.string().required(),
       }),
       validationOptions: {
         abortEarly: true,
@@ -48,7 +54,8 @@ import { CategoriesModule } from './categories/categories.module';
     PostsModule,
     UsersModule,
     AuthenticationModule,
-    CategoriesModule
+    CategoriesModule,
+    FilesModule
   ],
   controllers: [AppController],
   providers: [AppService],

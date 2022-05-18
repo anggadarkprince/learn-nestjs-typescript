@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import {ClassSerializerInterceptor, ValidationPipe} from "@nestjs/common";
 import {ExcludeNullInterceptor} from "./utils/exclude-null.interceptor";
+import { config } from 'aws-sdk';
+import {ConfigService} from "@nestjs/config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
