@@ -37,7 +37,7 @@ class User {
     public address: Address;
 
     @OneToMany(() => Post, (post: Post) => post.author)
-    public posts: Post[];
+    public posts?: Post[];
 
     @CreateDateColumn({name: 'created_at'})
     created_at: Date;
