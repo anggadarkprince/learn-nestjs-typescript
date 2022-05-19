@@ -11,6 +11,7 @@ import {Exclude} from "class-transformer";
 import Address from "./address.entity";
 import Post from "../../posts/post.entity";
 import PublicFile from "../../files/entities/public-file.entity";
+import PrivateFile from "../../files/entities/private-file.entity";
 
 @Entity({name: 'users'})
 class User {
@@ -46,6 +47,9 @@ class User {
 
     @OneToMany(() => Post, (post: Post) => post.author)
     public posts?: Post[];
+
+    @OneToMany(() => PrivateFile, (file: PrivateFile) => file.owner)
+    public files?: PrivateFile[];
 
     @CreateDateColumn({name: 'created_at'})
     created_at: Date;
