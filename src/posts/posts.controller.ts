@@ -6,7 +6,7 @@ import {
     Get,
     Param,
     Post,
-    Put,
+    Put, Query,
     Req,
     UseGuards,
     UseInterceptors
@@ -17,17 +17,22 @@ import UpdatePostDto from './dto/update-post.dto';
 import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.guard";
 import FindOneParams from "../utils/find-one-params";
 import RequestWithUser from "../authentication/interfaces/request-with-user.interface";
+import {PaginationParams} from "../utils/types/pagination-params";
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
 export default class PostsController {
-    constructor(
-        private readonly postsService: PostsService
-    ) {}
+    constructor(private readonly postsService: PostsService) {}
 
     @Get()
-    getAllPosts() {
-        return this.postsService.getAllPosts();
+    getPosts(
+        @Query('search') search: string,
+        @Query() { page, limit, startId }: PaginationParams
+    ) {
+        if (search) {
+            //return this.postsService.searchForPosts(search, page, limit, startId);
+        }
+        return this.postsService.getAllPosts(page, limit, startId);
     }
 
     @Get(':id')
