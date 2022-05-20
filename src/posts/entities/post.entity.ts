@@ -1,7 +1,7 @@
-import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {Transform} from "class-transformer";
-import User from "../users/entities/user.entity";
-import Category from "../categories/entities/category.entity";
+import User from "../../users/entities/user.entity";
+import Category from "../../categories/entities/category.entity";
 
 @Entity({name: 'posts'})
 class Post {
@@ -22,6 +22,7 @@ class Post {
     })
     public category?: string;
 
+    @Index('post_authorId_index')
     @ManyToOne(() => User, (author: User) => author.posts)
     @JoinColumn({ name: "author_id" })
     public author: User;
