@@ -21,7 +21,7 @@ export class UsersController {
     @Delete('avatar')
     @UseGuards(JwtAuthenticationGuard)
     async deleteAvatar(@Req() request: RequestWithUser) {
-        return this.usersService.deleteAvatar(request.user.id);
+        return this.usersService.deleteAvatarWithQueryRunner(request.user.id);
     }
 
     @Get('files')
