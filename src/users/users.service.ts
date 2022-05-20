@@ -4,6 +4,7 @@ import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import CreateUserDto from "./dto/create-user.dto";
 import {FilesService} from "../files/files.service";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -34,6 +35,32 @@ export class UsersService {
         const newUser = await this.usersRepository.create(userData);
         await this.usersRepository.save(newUser);
         return newUser;
+    }
+
+    async setCurrentRefreshToken(refreshToken: string, userId: number) {
+        const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+        await this.usersRepository.update(userId, {
+            currentHashedRefreshToken
+        });
+    }
+
+    async removeRefreshToken(userId: number) {
+        return this.usersRepository.update(userId, {
+            currentHashedRefreshToken: null
+        });
+    }
+
+    async getUserIfRefreshTokenMatches(refreshToken: string, userId: number) {
+        const user = await this.getById(userId);
+
+        const isRefreshTokenMatching = await bcrypt.compare(
+            refreshToken,
+            user.currentHashedRefreshToken
+        );
+
+        if (isRefreshTokenMatching) {
+            return user;
+        }
     }
 
     async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
