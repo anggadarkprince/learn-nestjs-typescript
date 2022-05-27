@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {CACHE_MANAGER, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import CreatePostDto from './dto/create-post.dto';
 import Post from './entities/post.entity';
 import UpdatePostDto from './dto/update-post.dto';
@@ -6,11 +6,25 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {FindManyOptions, MoreThan, Repository} from "typeorm";
 import PostNotFoundException from "./exceptions/post-not-found.exception";
 import User from "../users/entities/user.entity";
+import {GET_POSTS_CACHE_KEY} from "./constants/post-cache-key.constant";
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export default class PostsService {
 
-    constructor(@InjectRepository(Post) private postsRepository: Repository<Post>) {}
+    constructor(
+        @InjectRepository(Post) private postsRepository: Repository<Post>,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
+    ) {}
+
+    async clearCache() {
+        const keys: string[] = await this.cacheManager.store.keys();
+        keys.forEach((key) => {
+            if (key.startsWith(GET_POSTS_CACHE_KEY)) {
+                this.cacheManager.del(key);
+            }
+        })
+    }
 
     async getAllPosts(page: number = 1, limit: number = 10, startId?: number) {
         const where: FindManyOptions<Post>['where'] = {};
@@ -53,6 +67,9 @@ export default class PostsService {
             author: user
         });
         await this.postsRepository.save(newPost);
+
+        await this.clearCache();
+
         return newPost;
     }
 
@@ -60,7 +77,9 @@ export default class PostsService {
         await this.postsRepository.update(id, post);
         const updatedPost = await this.postsRepository.findOne(id, { relations: ['author']});
         if (updatedPost) {
-            return updatedPost
+            await this.clearCache();
+
+            return updatedPost;
         }
         throw new PostNotFoundException(id);
     }
@@ -70,5 +89,6 @@ export default class PostsService {
         if (!deleteResponse.affected) {
             throw new PostNotFoundException(id);
         }
+        await this.clearCache();
     }
 }

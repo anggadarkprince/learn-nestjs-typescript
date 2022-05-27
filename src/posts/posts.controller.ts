@@ -1,5 +1,5 @@
 import {
-    Body,
+    Body, CacheInterceptor, CacheKey, CacheTTL,
     ClassSerializerInterceptor,
     Controller,
     Delete,
@@ -18,6 +18,8 @@ import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.
 import FindOneParams from "../utils/find-one-params";
 import RequestWithUser from "../authentication/interfaces/request-with-user.interface";
 import {PaginationParams} from "../utils/types/pagination-params";
+import {GET_POSTS_CACHE_KEY} from "./constants/post-cache-key.constant";
+import {HttpCacheInterceptor} from "./interceptors/http-cache.interceptor";
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -25,6 +27,10 @@ export default class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
     @Get()
+    //@UseInterceptors(CacheInterceptor)
+    @UseInterceptors(HttpCacheInterceptor)
+    @CacheKey(GET_POSTS_CACHE_KEY)
+    @CacheTTL(120)
     getPosts(
         @Query('search') search: string,
         @Query() { page, limit, startId }: PaginationParams

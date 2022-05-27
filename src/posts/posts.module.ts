@@ -1,11 +1,17 @@
-import { Module } from '@nestjs/common';
+import {CacheModule, Module} from '@nestjs/common';
 import PostsController from './posts.controller';
 import PostsService from './posts.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import Post from "./entities/post.entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Post])],
+    imports: [
+        CacheModule.register({
+            ttl: 5,
+            max: 100
+        }),
+        TypeOrmModule.forFeature([Post])
+    ],
     controllers: [PostsController],
     providers: [PostsService],
 })
