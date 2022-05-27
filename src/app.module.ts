@@ -11,6 +11,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { CategoriesModule } from './categories/categories.module';
 import { FilesModule } from './files/files.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
+import { SubscribersGrpcModule } from './subscribers-grpc/subscribers-grpc.module';
 
 @Module({
   imports: [
@@ -65,7 +66,8 @@ import { SubscribersModule } from './subscribers/subscribers.module';
     AuthenticationModule,
     CategoriesModule,
     FilesModule,
-    SubscribersModule
+    SubscribersModule,
+    SubscribersGrpcModule
   ],
   controllers: [AppController],
   providers: [AppService],
