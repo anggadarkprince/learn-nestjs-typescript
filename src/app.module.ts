@@ -32,6 +32,12 @@ import { SubscribersModule } from './subscribers/subscribers.module';
         S3_ACCESS_KEY_ID: Joi.string().required(),
         S3_SECRET_ACCESS_KEY: Joi.string().required(),
         S3_BUCKET: Joi.string().required(),
+        SUBSCRIBERS_SERVICE_HOST: Joi.string(),
+        SUBSCRIBERS_SERVICE_PORT: Joi.number(),
+        RABBITMQ_USER: Joi.string(),
+        RABBITMQ_PASSWORD: Joi.string(),
+        RABBITMQ_HOST: Joi.string(),
+        RABBITMQ_QUEUE_NAME: Joi.string()
       }),
       validationOptions: {
         abortEarly: true,
