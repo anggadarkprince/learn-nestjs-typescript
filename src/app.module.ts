@@ -12,6 +12,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { FilesModule } from './files/files.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { SubscribersGrpcModule } from './subscribers-grpc/subscribers-grpc.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -67,7 +68,8 @@ import { SubscribersGrpcModule } from './subscribers-grpc/subscribers-grpc.modul
     CategoriesModule,
     FilesModule,
     SubscribersModule,
-    SubscribersGrpcModule
+    SubscribersGrpcModule,
+    CommentsModule
   ],
   controllers: [AppController],
   providers: [AppService],

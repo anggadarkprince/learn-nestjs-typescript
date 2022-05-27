@@ -1,7 +1,18 @@
-import {Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn
+} from 'typeorm';
 import {Transform} from "class-transformer";
 import User from "../../users/entities/user.entity";
 import Category from "../../categories/entities/category.entity";
+import Comment from "../../comments/entities/comment.entity";
 
 @Entity({name: 'posts'})
 class Post {
@@ -40,6 +51,9 @@ class Post {
         }
     })
     public categories: Category[];
+
+    @OneToMany(() => Comment, (comment: Comment) => comment.post)
+    public comments?: Comment[];
 }
 
 export default Post;
