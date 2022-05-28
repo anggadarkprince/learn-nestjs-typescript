@@ -15,6 +15,9 @@ import { SubscribersGrpcModule } from './subscribers-grpc/subscribers-grpc.modul
 import { CommentsModule } from './comments/comments.module';
 import { ProductCategoriesModule } from './product-categories/product-categories.module';
 import { ProductsModule } from './products/products.module';
+import { EmailModule } from './email/email.module';
+import {ScheduleModule} from "@nestjs/schedule";
+import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
 
 @Module({
   imports: [
@@ -66,6 +69,7 @@ import { ProductsModule } from './products/products.module';
         namingStrategy: new SnakeNamingStrategy()
       })
     }),
+    ScheduleModule.forRoot(),
     PostsModule,
     UsersModule,
     AuthenticationModule,
@@ -75,7 +79,9 @@ import { ProductsModule } from './products/products.module';
     SubscribersGrpcModule,
     CommentsModule,
     ProductCategoriesModule,
-    ProductsModule
+    ProductsModule,
+    EmailModule,
+    EmailSchedulingModule
   ],
   controllers: [AppController],
   providers: [AppService],
