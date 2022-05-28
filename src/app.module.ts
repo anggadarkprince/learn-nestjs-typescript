@@ -41,7 +41,9 @@ import { ProductsModule } from './products/products.module';
         RABBITMQ_USER: Joi.string(),
         RABBITMQ_PASSWORD: Joi.string(),
         RABBITMQ_HOST: Joi.string(),
-        RABBITMQ_QUEUE_NAME: Joi.string()
+        RABBITMQ_QUEUE_NAME: Joi.string(),
+        REDIS_HOST: Joi.string(),
+        REDIS_PORT: Joi.string()
       }),
       validationOptions: {
         abortEarly: true,
