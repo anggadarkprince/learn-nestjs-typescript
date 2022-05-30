@@ -5,6 +5,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import Post from "./entities/post.entity";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import * as redisStore from 'cache-manager-redis-store';
+import {PostsResolver} from "./posts.resolver";
 
 @Module({
     imports: [
@@ -26,6 +27,6 @@ import * as redisStore from 'cache-manager-redis-store';
         TypeOrmModule.forFeature([Post])
     ],
     controllers: [PostsController],
-    providers: [PostsService],
+    providers: [PostsService, PostsResolver],
 })
 export class PostsModule {}

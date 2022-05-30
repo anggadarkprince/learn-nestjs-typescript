@@ -10,7 +10,7 @@ class CreatePostDto {
   title: string;
 
   @IsOptional()
-  categories: object[];
+  categories?: object[];
 }
 
 export default CreatePostDto;
