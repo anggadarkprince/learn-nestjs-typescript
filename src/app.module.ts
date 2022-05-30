@@ -23,6 +23,7 @@ import {GraphQLModule} from "@nestjs/graphql";
 import { join } from 'path';
 import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
 import { PubSubModule } from './pub-sub/pub-sub.module';
+import {Timestamp} from "./utils/scalars/timestamp.scalar";
 
 @Module({
   imports: [
@@ -84,7 +85,10 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
       useFactory: (configService: ConfigService) => ({
         playground: Boolean(configService.get('GRAPHQL_PLAYGROUND')),
         autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-        installSubscriptionHandlers: true
+        installSubscriptionHandlers: true,
+        //buildSchemaOptions: {
+        //  dateScalarMode: 'timestamp',
+        //}
       })
     }),
     ScheduleModule.forRoot(),
@@ -104,6 +108,6 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
     PubSubModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Timestamp],
 })
 export class AppModule {}

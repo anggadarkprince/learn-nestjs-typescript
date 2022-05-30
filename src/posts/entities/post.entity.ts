@@ -1,5 +1,5 @@
 import {
-    Column,
+    Column, CreateDateColumn,
     Entity,
     Index,
     JoinColumn,
@@ -25,7 +25,7 @@ class Post {
     @Column()
     public content: string;
 
-    @Column({ nullable: true })
+    @Column({nullable: true})
     @Transform(({value}) => {
         if (value !== null) {
             return value;
@@ -35,7 +35,7 @@ class Post {
 
     @Index('post_authorId_index')
     @ManyToOne(() => User, (author: User) => author.posts)
-    @JoinColumn({ name: "author_id" })
+    @JoinColumn({name: "author_id"})
     public author: User;
 
     @RelationId((post: Post) => post.author)
@@ -57,6 +57,12 @@ class Post {
 
     @OneToMany(() => Comment, (comment: Comment) => comment.post)
     public comments?: Comment[];
+
+    @CreateDateColumn({type: 'timestamp'})
+    createdAt: Date;
+
+    @Column({type: 'timestamp', nullable: true})
+    scheduledDate?: Date;
 }
 
 export default Post;
