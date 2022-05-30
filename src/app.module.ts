@@ -22,6 +22,7 @@ import { ChatModule } from './chat/chat.module';
 import {GraphQLModule} from "@nestjs/graphql";
 import { join } from 'path';
 import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
+import { PubSubModule } from './pub-sub/pub-sub.module';
 
 @Module({
   imports: [
@@ -51,6 +52,8 @@ import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
         RABBITMQ_QUEUE_NAME: Joi.string(),
         REDIS_HOST: Joi.string(),
         REDIS_PORT: Joi.string(),
+        REDIS_USERNAME: Joi.string(),
+        REDIS_PASSWORD: Joi.string(),
         GRAPHQL_PLAYGROUND: Joi.number(),
       }),
       validationOptions: {
@@ -81,6 +84,7 @@ import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
       useFactory: (configService: ConfigService) => ({
         playground: Boolean(configService.get('GRAPHQL_PLAYGROUND')),
         autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+        installSubscriptionHandlers: true
       })
     }),
     ScheduleModule.forRoot(),
@@ -96,7 +100,8 @@ import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
     ProductsModule,
     EmailModule,
     EmailSchedulingModule,
-    ChatModule
+    ChatModule,
+    PubSubModule
   ],
   controllers: [AppController],
   providers: [AppService],

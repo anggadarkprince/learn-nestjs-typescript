@@ -1,16 +1,20 @@
-import {Args, Context, Info, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
+import {Args, Context, Info, Mutation, Parent, Query, ResolveField, Resolver, Subscription} from '@nestjs/graphql';
 import {Post} from './models/post.model';
 import PostsService from './posts.service';
-import {UseGuards} from "@nestjs/common";
+import {Inject, UseGuards} from "@nestjs/common";
 import {GraphqlJwtAuthGuard} from "../authentication/guards/graphql-jwt-auth.guard";
 import RequestWithUser from "../authentication/interfaces/request-with-user.interface";
 import {CreatePostInput} from "./inputs/post.input";
 import {GraphQLResolveInfo} from "graphql";
 import {parseResolveInfo, ResolveTree, simplifyParsedResolveInfoFragmentWithType} from "graphql-parse-resolve-info";
+import {RedisPubSub} from "graphql-redis-subscriptions";
+import {PUB_SUB} from "../pub-sub/pub-sub.module";
+
+const POST_ADDED_EVENT = 'postAdded';
 
 @Resolver(() => Post)
 export class PostsResolver {
-    constructor(private postsService: PostsService) {
+    constructor(private postsService: PostsService, @Inject(PUB_SUB) private pubSub: RedisPubSub) {
     }
 
     @Query(() => [Post])
@@ -28,12 +32,19 @@ export class PostsResolver {
         return posts.items;
     }
 
+    @Subscription(() => Post)
+    postAdded() {
+        return this.pubSub.asyncIterator(POST_ADDED_EVENT);
+    }
+
     @Mutation(() => Post)
     @UseGuards(GraphqlJwtAuthGuard)
     async createPost(
         @Args('input') createPostInput: CreatePostInput,
         @Context() context: { req: RequestWithUser },
     ) {
-        return this.postsService.createPost(createPostInput, context.req.user);
+        const newPost = await this.postsService.createPost(createPostInput, context.req.user);
+        this.pubSub.publish(POST_ADDED_EVENT, { postAdded: newPost });
+        return newPost;
     }
 }

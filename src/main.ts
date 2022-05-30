@@ -8,15 +8,17 @@ import {ConfigService} from "@nestjs/config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true
+  }));
 
   // Serialization: that uses class-transformer under the hood @UseInterceptors(ClassSerializerInterceptor)
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(
-      app.get(Reflector))
-  );
+  //app.useGlobalInterceptors(new ClassSerializerInterceptor(
+  //    app.get(Reflector))
+  //);
 
   // Custom interceptor to remove null value
-  app.useGlobalInterceptors(new ExcludeNullInterceptor());
+  //app.useGlobalInterceptors(new ExcludeNullInterceptor());
 
   app.use(cookieParser());
 
