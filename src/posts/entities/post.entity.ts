@@ -7,7 +7,7 @@ import {
     ManyToMany,
     ManyToOne,
     OneToMany,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn, RelationId
 } from 'typeorm';
 import {Transform} from "class-transformer";
 import User from "../../users/entities/user.entity";
@@ -37,6 +37,9 @@ class Post {
     @ManyToOne(() => User, (author: User) => author.posts)
     @JoinColumn({ name: "author_id" })
     public author: User;
+
+    @RelationId((post: Post) => post.author)
+    public authorId: number;
 
     @ManyToMany(() => Category, (category: Category) => category.posts)
     @JoinTable({

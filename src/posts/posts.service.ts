@@ -26,7 +26,7 @@ export default class PostsService {
         })
     }
 
-    async getAllPosts(page: number = 1, limit: number = 10, startId?: number) {
+    async getPosts(page: number = 1, limit: number = 10, startId?: number, options?: FindManyOptions<Post>) {
         const where: FindManyOptions<Post>['where'] = {};
         let separateCount = 0;
         if (startId) {
@@ -51,6 +51,12 @@ export default class PostsService {
             currentPage: Number(page),
             totalPage: Math.ceil((startId ? separateCount : count) / limit)
         }
+    }
+
+    async getPostsWithAuthors(offset?: number, limit?: number, startId?: number) {
+        return this.getPosts(offset, limit, startId, {
+            relations: ['author'],
+        })
     }
 
     async getPostById(id: number) {

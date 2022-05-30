@@ -38,7 +38,7 @@ export default class PostsController {
         if (search) {
             //return this.postsService.searchForPosts(search, page, limit, startId);
         }
-        return this.postsService.getAllPosts(page, limit, startId);
+        return this.postsService.getPosts(page, limit, startId);
     }
 
     @Get(':id')

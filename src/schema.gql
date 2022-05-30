@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Author {
+type User {
   id: Int!
   email: String!
   name: String!
@@ -12,7 +12,8 @@ type Post {
   id: Int!
   title: String!
   content: String!
-  author: Author!
+  authorId: Int!
+  author: User!
 }
 
 type Query {

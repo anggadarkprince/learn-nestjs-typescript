@@ -7,7 +7,7 @@ import {
     UnauthorizedException
 } from '@nestjs/common';
 import User from "./entities/user.entity";
-import {Connection, Repository} from "typeorm";
+import {Connection, In, Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import CreateUserDto from "./dto/create-user.dto";
 import {FilesService} from "../files/files.service";
@@ -29,6 +29,12 @@ export class UsersService {
             return user;
         }
         throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
+    }
+
+    async getByIds(ids: number[]) {
+        return this.usersRepository.find({
+            where: {id: In(ids)},
+        });
     }
 
     async getByEmail(email: string) {
