@@ -25,6 +25,7 @@ import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
 import { PubSubModule } from './pub-sub/pub-sub.module';
 import {Timestamp} from "./utils/scalars/timestamp.scalar";
 import { OptimizeModule } from './optimize/optimize.module';
+import {BullModule} from "@nestjs/bull";
 
 @Module({
   imports: [
@@ -92,6 +93,18 @@ import { OptimizeModule } from './optimize/optimize.module';
         //  dateScalarMode: 'timestamp',
         //}
       })
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('REDIS_HOST'),
+          port: Number(configService.get('REDIS_PORT')),
+          username: configService.get('REDIS_USERNAME'),
+          password: configService.get('REDIS_PASSWORD'),
+        },
+      }),
+      inject: [ConfigService],
     }),
     ScheduleModule.forRoot(),
     PostsModule,

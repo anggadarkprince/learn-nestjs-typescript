@@ -1,34 +1,45 @@
-import {Controller, Post, Res, UploadedFiles, UseInterceptors} from '@nestjs/common';
+import {Controller, Get, Param, Post, Res, UploadedFiles, UseInterceptors} from '@nestjs/common';
 import {AnyFilesInterceptor} from '@nestjs/platform-express';
 import {Express, Response} from 'express';
 
-import {buffer} from 'imagemin';
-import imageminPngquant from 'imagemin-pngquant';
-
 import {Readable} from 'stream';
-import * as AdmZip from 'adm-zip';
+import {InjectQueue} from "@nestjs/bull";
+import {Queue} from "bull";
 
 @Controller('optimize')
 export class OptimizeController {
+    constructor(@InjectQueue('image') private readonly imageQueue: Queue) {
+    }
 
     @Post('image')
     @UseInterceptors(AnyFilesInterceptor())
-    async addAvatar(@Res() response: Response, @UploadedFiles() files: Express.Multer.File[]) {
+    async processImage(@UploadedFiles() files: Express.Multer.File[]) {
+        const job = await this.imageQueue.add('optimize', {
+            files
+        });
 
-        const zip = new AdmZip();
-
-        for (const file of files) {
-            const optimizedFile = await buffer(file.buffer, {
-                plugins: [
-                    imageminPngquant({
-                        quality: [0.6, 0.8]
-                    })
-                ]
-            })
-
-            zip.addFile(file.originalname, optimizedFile);
+        return {
+            jobId: job.id
         }
-        const stream = Readable.from(zip.toBuffer());
+    }
+
+    @Get('image/:id')
+    async getJobResult(@Res() response: Response, @Param('id') id: string) {
+        const job = await this.imageQueue.getJob(id);
+
+        if (!job) {
+            return response.sendStatus(404);
+        }
+
+        const isCompleted = await job.isCompleted();
+
+        if (!isCompleted) {
+            return response.sendStatus(202);
+        }
+
+        const result = Buffer.from(job.returnvalue);
+
+        const stream = Readable.from(result);
 
         stream.pipe(response);
     }
