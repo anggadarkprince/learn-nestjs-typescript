@@ -77,6 +77,18 @@ export class UsersService {
         }
     }
 
+    async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
+        return this.usersRepository.update(userId, {
+            twoFactorAuthenticationSecret: secret
+        });
+    }
+
+    async turnOnTwoFactorAuthentication(userId: number) {
+        return this.usersRepository.update(userId, {
+            isTwoFactorAuthenticationEnabled: true
+        });
+    }
+
     async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
         const user = await this.getById(userId);
         if (user.avatar) {

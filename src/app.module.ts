@@ -56,6 +56,7 @@ import {Timestamp} from "./utils/scalars/timestamp.scalar";
         REDIS_USERNAME: Joi.string(),
         REDIS_PASSWORD: Joi.string(),
         GRAPHQL_PLAYGROUND: Joi.number(),
+        TWO_FACTOR_AUTHENTICATION_APP_NAME: Joi.string()
       }),
       validationOptions: {
         abortEarly: true,

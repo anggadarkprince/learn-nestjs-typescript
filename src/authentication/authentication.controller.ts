@@ -51,6 +51,10 @@ export class AuthenticationController {
         // response.setHeader('Set-Cookie', cookie);
         // return response.send(user); if not passing { passthrough: true } then use this response
 
+        if (user.isTwoFactorAuthenticationEnabled) {
+            return;
+        }
+
         return user;
     }
 

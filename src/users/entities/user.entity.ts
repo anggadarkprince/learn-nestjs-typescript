@@ -55,6 +55,12 @@ class User {
     @OneToMany(() => PrivateFile, (file: PrivateFile) => file.owner)
     public files?: PrivateFile[];
 
+    @Column({nullable: true})
+    public twoFactorAuthenticationSecret?: string;
+
+    @Column({default: false})
+    public isTwoFactorAuthenticationEnabled: boolean;
+
     @CreateDateColumn({name: 'created_at'})
     created_at: Date;
 
