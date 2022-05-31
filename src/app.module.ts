@@ -24,6 +24,7 @@ import { join } from 'path';
 import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
 import { PubSubModule } from './pub-sub/pub-sub.module';
 import {Timestamp} from "./utils/scalars/timestamp.scalar";
+import { OptimizeModule } from './optimize/optimize.module';
 
 @Module({
   imports: [
@@ -106,7 +107,8 @@ import {Timestamp} from "./utils/scalars/timestamp.scalar";
     EmailModule,
     EmailSchedulingModule,
     ChatModule,
-    PubSubModule
+    PubSubModule,
+    OptimizeModule
   ],
   controllers: [AppController],
   providers: [AppService, Timestamp],
