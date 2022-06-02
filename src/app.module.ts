@@ -28,6 +28,7 @@ import { OptimizeModule } from './optimize/optimize.module';
 import {BullModule} from "@nestjs/bull";
 import { StripeModule } from './stripe/stripe.module';
 import { ChargeModule } from './charge/charge.module';
+import { CreditCardsModule } from './credit-cards/credit-cards.module';
 
 @Module({
   imports: [
@@ -128,6 +129,7 @@ import { ChargeModule } from './charge/charge.module';
     PubSubModule,
     OptimizeModule,
     ChargeModule,
+    CreditCardsModule,
   ],
   controllers: [AppController],
   providers: [AppService, Timestamp],

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import Stripe from 'stripe';
 import {ConfigService} from "@nestjs/config";
 
@@ -25,7 +25,22 @@ export class StripeService {
             customer: customerId,
             payment_method: paymentMethodId,
             currency: this.configService.get('STRIPE_CURRENCY'),
+            off_session: true,
             confirm: true
+        });
+    }
+
+    public async attachCreditCard(paymentMethodId: string, customerId: string) {
+        return this.stripe.setupIntents.create({
+            customer: customerId,
+            payment_method: paymentMethodId,
+        })
+    }
+
+    public async listCreditCards(customerId: string) {
+        return this.stripe.paymentMethods.list({
+            customer: customerId,
+            type: 'card',
         });
     }
 }
