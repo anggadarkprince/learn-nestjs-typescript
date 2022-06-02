@@ -64,6 +64,9 @@ class User {
     @Column({nullable: true})
     public stripeCustomerId?: string;
 
+    @Column({ nullable: true })
+    public monthlySubscriptionStatus?: string;
+
     @CreateDateColumn({name: 'created_at'})
     created_at: Date;
 

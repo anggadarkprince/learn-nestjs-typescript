@@ -174,4 +174,11 @@ export class UsersService {
         }
         throw new NotFoundException('User with this id does not exist');
     }
+
+    async updateMonthlySubscriptionStatus(stripeCustomerId: string, monthlySubscriptionStatus: string) {
+        return this.usersRepository.update(
+            {stripeCustomerId},
+            {monthlySubscriptionStatus}
+        );
+    }
 }

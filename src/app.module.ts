@@ -30,6 +30,7 @@ import { StripeModule } from './stripe/stripe.module';
 import { ChargeModule } from './charge/charge.module';
 import { CreditCardsModule } from './credit-cards/credit-cards.module';
 import { SubscriptionModule } from './subscriptions/subscription.module';
+import { StripeWebhookModule } from './stripe-webhook/stripe-webhook.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { SubscriptionModule } from './subscriptions/subscription.module';
         STRIPE_CURRENCY: Joi.string(),
         FRONTEND_URL: Joi.string(),
         MONTHLY_SUBSCRIPTION_PRICE_ID: Joi.string(),
+        STRIPE_WEBHOOK_SECRET: Joi.string()
       }),
       validationOptions: {
         abortEarly: true,
@@ -133,6 +135,7 @@ import { SubscriptionModule } from './subscriptions/subscription.module';
     ChargeModule,
     CreditCardsModule,
     SubscriptionModule,
+    StripeWebhookModule,
   ],
   controllers: [AppController],
   providers: [AppService, Timestamp],

@@ -5,6 +5,7 @@ import {ClassSerializerInterceptor, ValidationPipe} from "@nestjs/common";
 import {ExcludeNullInterceptor} from "./utils/exclude-null.interceptor";
 import { config } from 'aws-sdk';
 import {ConfigService} from "@nestjs/config";
+import rawBodyMiddleware from './utils/raw-body.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,6 +28,8 @@ async function bootstrap() {
     origin: configService.get('FRONTEND_URL'),
     credentials: true
   });
+
+  app.use(rawBodyMiddleware());
 
   await app.listen(3000);
 }

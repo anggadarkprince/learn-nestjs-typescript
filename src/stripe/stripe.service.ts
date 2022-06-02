@@ -13,6 +13,16 @@ export class StripeService {
         });
     }
 
+    public async constructEventFromPayload(signature: string, payload: Buffer) {
+        const webhookSecret = this.configService.get('STRIPE_WEBHOOK_SECRET');
+
+        return this.stripe.webhooks.constructEvent(
+            payload,
+            signature,
+            webhookSecret
+        );
+    }
+
     public async createCustomer(name: string, email: string) {
         return this.stripe.customers.create({
             name,
