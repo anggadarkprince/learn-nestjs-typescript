@@ -29,6 +29,7 @@ import {BullModule} from "@nestjs/bull";
 import { StripeModule } from './stripe/stripe.module';
 import { ChargeModule } from './charge/charge.module';
 import { CreditCardsModule } from './credit-cards/credit-cards.module';
+import { SubscriptionModule } from './subscriptions/subscription.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { CreditCardsModule } from './credit-cards/credit-cards.module';
         STRIPE_SECRET_KEY: Joi.string(),
         STRIPE_CURRENCY: Joi.string(),
         FRONTEND_URL: Joi.string(),
+        MONTHLY_SUBSCRIPTION_PRICE_ID: Joi.string(),
       }),
       validationOptions: {
         abortEarly: true,
@@ -130,6 +132,7 @@ import { CreditCardsModule } from './credit-cards/credit-cards.module';
     OptimizeModule,
     ChargeModule,
     CreditCardsModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService, Timestamp],
