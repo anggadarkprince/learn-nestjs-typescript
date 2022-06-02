@@ -5,11 +5,13 @@ import User from "./entities/user.entity";
 import Address from "./entities/address.entity";
 import {FilesModule} from "../files/files.module";
 import { UsersController } from './users.controller';
+import {StripeModule} from "../stripe/stripe.module";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User, Address]),
-        FilesModule
+        FilesModule,
+        StripeModule
     ],
     providers: [UsersService],
     exports: [UsersService],

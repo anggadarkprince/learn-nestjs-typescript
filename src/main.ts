@@ -22,6 +22,12 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
+  const configService = app.get(ConfigService);
+  app.enableCors({
+    origin: configService.get('FRONTEND_URL'),
+    credentials: true
+  });
+
   await app.listen(3000);
 }
 bootstrap();

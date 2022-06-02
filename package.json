@@ -69,6 +69,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.4.0",
+    "stripe": "^9.6.0",
     "typeorm": "^0.2.45",
     "typeorm-naming-strategies": "^4.1.0",
     "uuid": "^8.3.2"

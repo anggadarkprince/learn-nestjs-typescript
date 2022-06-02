@@ -61,6 +61,9 @@ class User {
     @Column({default: false})
     public isTwoFactorAuthenticationEnabled: boolean;
 
+    @Column({nullable: true})
+    public stripeCustomerId?: string;
+
     @CreateDateColumn({name: 'created_at'})
     created_at: Date;
 

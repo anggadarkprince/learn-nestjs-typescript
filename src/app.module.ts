@@ -26,6 +26,8 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
 import {Timestamp} from "./utils/scalars/timestamp.scalar";
 import { OptimizeModule } from './optimize/optimize.module';
 import {BullModule} from "@nestjs/bull";
+import { StripeModule } from './stripe/stripe.module';
+import { ChargeModule } from './charge/charge.module';
 
 @Module({
   imports: [
@@ -58,7 +60,10 @@ import {BullModule} from "@nestjs/bull";
         REDIS_USERNAME: Joi.string(),
         REDIS_PASSWORD: Joi.string(),
         GRAPHQL_PLAYGROUND: Joi.number(),
-        TWO_FACTOR_AUTHENTICATION_APP_NAME: Joi.string()
+        TWO_FACTOR_AUTHENTICATION_APP_NAME: Joi.string(),
+        STRIPE_SECRET_KEY: Joi.string(),
+        STRIPE_CURRENCY: Joi.string(),
+        FRONTEND_URL: Joi.string(),
       }),
       validationOptions: {
         abortEarly: true,
@@ -121,7 +126,8 @@ import {BullModule} from "@nestjs/bull";
     EmailSchedulingModule,
     ChatModule,
     PubSubModule,
-    OptimizeModule
+    OptimizeModule,
+    ChargeModule,
   ],
   controllers: [AppController],
   providers: [AppService, Timestamp],
