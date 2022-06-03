@@ -11,6 +11,7 @@ import {JwtRefreshTokenStrategy} from "./strategies/jwt-refresh-token.strategy";
 import {TwoFactorAuthenticationController} from "./two-factor/two-factor-authentication.controller";
 import {TwoFactorAuthenticationService} from "./two-factor/two-factor-authentication.service";
 import {JwtTwoFactorStrategy} from "./strategies/jwt-two-factor.strategy";
+import {EmailConfirmationModule} from "../email-confirmation/email-confirmation.module";
 
 @Module({
     imports: [
@@ -26,6 +27,7 @@ import {JwtTwoFactorStrategy} from "./strategies/jwt-two-factor.strategy";
                 },
             }),
         }),
+        EmailConfirmationModule
     ],
     providers: [
         AuthenticationService, LocalStrategy, JwtStrategy, JwtRefreshTokenStrategy,

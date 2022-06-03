@@ -4,6 +4,7 @@ import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.
 import AddCreditCardDto from "./dto/add-credit-card.dto";
 import RequestWithUser from "../authentication/interfaces/request-with-user.interface";
 import SetDefaultCreditCardDto from "./dto/set-default-credit-card.dto";
+import {EmailConfirmationGuard} from "../email-confirmation/guards/email-confirmation.guard";
 
 @Controller('credit-cards')
 export class CreditCardsController {
@@ -11,6 +12,7 @@ export class CreditCardsController {
     }
 
     @Post()
+    @UseGuards(EmailConfirmationGuard)
     @UseGuards(JwtAuthenticationGuard)
     async addCreditCard(@Body() creditCard: AddCreditCardDto, @Req() request: RequestWithUser) {
         return this.stripeService.attachCreditCard(creditCard.paymentMethodId, request.user.stripeCustomerId);

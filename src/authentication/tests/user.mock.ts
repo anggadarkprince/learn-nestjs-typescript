@@ -12,6 +12,7 @@ const mockedUser: User = {
         country: 'countryName'
     },
     isTwoFactorAuthenticationEnabled: false,
+    isEmailConfirmed: false,
     created_at: null,
     updated_at: null
 }

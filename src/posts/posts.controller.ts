@@ -21,6 +21,7 @@ import {PaginationParams} from "../utils/types/pagination-params";
 import {GET_POSTS_CACHE_KEY} from "./constants/post-cache-key.constant";
 import {HttpCacheInterceptor} from "./interceptors/http-cache.interceptor";
 import JwtTwoFactorGuard from "../authentication/guards/jwt-two-factor.guard";
+import {EmailConfirmationGuard} from "../email-confirmation/guards/email-confirmation.guard";
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -48,6 +49,7 @@ export default class PostsController {
     }
 
     @Post()
+    @UseGuards(EmailConfirmationGuard)
     @UseGuards(JwtTwoFactorGuard)
     async createPost(@Body() post: CreatePostDto, @Req() req: RequestWithUser) {
         return this.postsService.createPost(post, req.user);

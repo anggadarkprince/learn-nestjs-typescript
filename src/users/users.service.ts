@@ -70,6 +70,12 @@ export class UsersService {
         });
     }
 
+    async markEmailAsConfirmed(email: string) {
+        return this.usersRepository.update({email}, {
+            isEmailConfirmed: true
+        });
+    }
+
     async getUserIfRefreshTokenMatches(refreshToken: string, userId: number) {
         const user = await this.getById(userId);
 
