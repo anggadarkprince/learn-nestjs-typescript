@@ -14,6 +14,7 @@ const mockedUser: User = {
     isTwoFactorAuthenticationEnabled: false,
     isEmailConfirmed: false,
     isPhoneNumberConfirmed: false,
+    isRegisteredWithGoogle: false,
     created_at: null,
     updated_at: null
 }

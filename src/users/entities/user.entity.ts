@@ -21,15 +21,15 @@ class User {
     @Column({unique: true})
     public email: string;
 
-    @Column({ default: false })
+    @Column({default: false})
     public isEmailConfirmed: boolean;
 
     @Column()
     public name: string;
 
-    @Column()
+    @Column({nullable: true})
     @Exclude()
-    public password: string;
+    public password?: string;
 
     @Column({nullable: true})
     @Exclude()
@@ -38,8 +38,11 @@ class User {
     @Column({name: "phone_number", nullable: true})
     public phoneNumber?: string;
 
-    @Column({ default: false })
+    @Column({default: false})
     public isPhoneNumberConfirmed: boolean;
+
+    @Column({default: false})
+    public isRegisteredWithGoogle: boolean;
 
     @JoinColumn()
     @OneToOne(() => PublicFile, {
@@ -70,7 +73,7 @@ class User {
     @Column({nullable: true})
     public stripeCustomerId?: string;
 
-    @Column({ nullable: true })
+    @Column({nullable: true})
     public monthlySubscriptionStatus?: string;
 
     @CreateDateColumn({name: 'created_at'})
