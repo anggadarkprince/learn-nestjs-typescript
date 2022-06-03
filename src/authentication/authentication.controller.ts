@@ -19,6 +19,7 @@ import JwtAuthenticationGuard from "./guards/jwt-authentication.guard";
 import {UsersService} from "../users/users.service";
 import JwtRefreshGuard from "./guards/jwt-refresh.guard";
 import {EmailConfirmationService} from "../email-confirmation/email-confirmation.service";
+import {SmsService} from "../sms/sms.service";
 
 @Controller('authentication')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -26,13 +27,15 @@ export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
         private readonly usersService: UsersService,
-        private readonly emailConfirmationService: EmailConfirmationService
+        private readonly emailConfirmationService: EmailConfirmationService,
+        private readonly smsService: SmsService,
     ) {}
 
     @Post('register')
     async register(@Body() registrationData: RegisterDto) {
         const user = await this.authenticationService.register(registrationData);
         await this.emailConfirmationService.sendVerificationLink(registrationData.email);
+        await this.smsService.sendMessage(user.phoneNumber, `Welcome ${user.name}, please confirm your email ${user.email} to activate the account`);
         return user;
     }
 

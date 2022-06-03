@@ -13,6 +13,7 @@ const mockedUser: User = {
     },
     isTwoFactorAuthenticationEnabled: false,
     isEmailConfirmed: false,
+    isPhoneNumberConfirmed: false,
     created_at: null,
     updated_at: null
 }

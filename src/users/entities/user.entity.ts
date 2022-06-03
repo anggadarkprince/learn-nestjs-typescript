@@ -38,6 +38,9 @@ class User {
     @Column({name: "phone_number", nullable: true})
     public phoneNumber?: string;
 
+    @Column({ default: false })
+    public isPhoneNumberConfirmed: boolean;
+
     @JoinColumn()
     @OneToOne(() => PublicFile, {
         eager: true,

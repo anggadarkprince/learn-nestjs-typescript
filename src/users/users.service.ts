@@ -76,6 +76,12 @@ export class UsersService {
         });
     }
 
+    markPhoneNumberAsConfirmed(userId: number) {
+        return this.usersRepository.update({ id: userId }, {
+            isPhoneNumberConfirmed: true
+        });
+    }
+
     async getUserIfRefreshTokenMatches(refreshToken: string, userId: number) {
         const user = await this.getById(userId);
 

@@ -12,6 +12,7 @@ import {TwoFactorAuthenticationController} from "./two-factor/two-factor-authent
 import {TwoFactorAuthenticationService} from "./two-factor/two-factor-authentication.service";
 import {JwtTwoFactorStrategy} from "./strategies/jwt-two-factor.strategy";
 import {EmailConfirmationModule} from "../email-confirmation/email-confirmation.module";
+import {SmsModule} from "../sms/sms.module";
 
 @Module({
     imports: [
@@ -27,7 +28,8 @@ import {EmailConfirmationModule} from "../email-confirmation/email-confirmation.
                 },
             }),
         }),
-        EmailConfirmationModule
+        EmailConfirmationModule,
+        SmsModule
     ],
     providers: [
         AuthenticationService, LocalStrategy, JwtStrategy, JwtRefreshTokenStrategy,
