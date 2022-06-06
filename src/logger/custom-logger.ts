@@ -32,7 +32,7 @@ class CustomLogger extends ConsoleLogger {
 
         this.logsService.createLog({
             message,
-            context,
+            context: context || this.context || 'NO CONTEXT',
             level: 'log'
         })
     }
@@ -42,7 +42,7 @@ class CustomLogger extends ConsoleLogger {
 
         this.logsService.createLog({
             message,
-            context,
+            context: context || this.context || 'NO CONTEXT',
             level: 'error'
         })
     }
@@ -52,7 +52,7 @@ class CustomLogger extends ConsoleLogger {
 
         this.logsService.createLog({
             message,
-            context,
+            context: context || this.context || 'NO CONTEXT',
             level: 'error'
         })
     }
@@ -62,7 +62,7 @@ class CustomLogger extends ConsoleLogger {
 
         this.logsService.createLog({
             message,
-            context,
+            context: context || this.context || 'NO CONTEXT',
             level: 'error'
         })
     }
@@ -72,7 +72,7 @@ class CustomLogger extends ConsoleLogger {
 
         this.logsService.createLog({
             message,
-            context,
+            context: context || this.context || 'NO CONTEXT',
             level: 'error'
         })
     }

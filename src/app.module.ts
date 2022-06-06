@@ -33,6 +33,7 @@ import { SmsModule } from './sms/sms.module';
 import { GoogleAuthenticationModule } from './google-authentication/google-authentication.module';
 import { DatabaseModule } from './database/database.module';
 import { LoggerModule } from './logger/logger.module';
+import { HealthModule } from './health/health.module';
 import HttpLogsMiddleware from "./utils/middlewares/http-logs-middleware.service";
 
 @Module({
@@ -136,6 +137,7 @@ import HttpLogsMiddleware from "./utils/middlewares/http-logs-middleware.service
     SmsModule,
     GoogleAuthenticationModule,
     LoggerModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService, Timestamp],
