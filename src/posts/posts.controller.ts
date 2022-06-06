@@ -15,7 +15,7 @@ import PostsService from './posts.service';
 import CreatePostDto from './dto/create-post.dto';
 import UpdatePostDto from './dto/update-post.dto';
 import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.guard";
-import FindOneParams from "../utils/find-one-params";
+import FindOneParams from "../utils/types/find-one-params";
 import RequestWithUser from "../authentication/interfaces/request-with-user.interface";
 import {PaginationParams} from "../utils/types/pagination-params";
 import {GET_POSTS_CACHE_KEY} from "./constants/post-cache-key.constant";

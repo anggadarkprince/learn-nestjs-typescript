@@ -4,7 +4,7 @@ import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.
 import RequestWithUser from "../authentication/interfaces/request-with-user.interface";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {Express, Response} from 'express';
-import FindOneParams from "../utils/find-one-params";
+import FindOneParams from "../utils/types/find-one-params";
 
 @Controller('users')
 export class UsersController {

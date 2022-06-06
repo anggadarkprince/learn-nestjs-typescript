@@ -11,7 +11,7 @@ import {
     UseInterceptors
 } from '@nestjs/common';
 import {CategoriesService} from "./categories.service";
-import FindOneParams from "../utils/find-one-params";
+import FindOneParams from "../utils/types/find-one-params";
 import CreateCategoryDto from "./dto/create-category.dto";
 import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.guard";
 import UpdateCategoryDto from "./dto/update-category.dto";

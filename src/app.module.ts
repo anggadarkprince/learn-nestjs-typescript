@@ -1,8 +1,6 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import {MiddlewareConsumer, Module} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {PostsModule} from "./posts/posts.module";
@@ -26,7 +24,6 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
 import {Timestamp} from "./utils/scalars/timestamp.scalar";
 import { OptimizeModule } from './optimize/optimize.module';
 import {BullModule} from "@nestjs/bull";
-import { StripeModule } from './stripe/stripe.module';
 import { ChargeModule } from './charge/charge.module';
 import { CreditCardsModule } from './credit-cards/credit-cards.module';
 import { SubscriptionModule } from './subscriptions/subscription.module';
@@ -34,6 +31,9 @@ import { StripeWebhookModule } from './stripe-webhook/stripe-webhook.module';
 import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
 import { SmsModule } from './sms/sms.module';
 import { GoogleAuthenticationModule } from './google-authentication/google-authentication.module';
+import { DatabaseModule } from './database/database.module';
+import { LoggerModule } from './logger/logger.module';
+import HttpLogsMiddleware from "./utils/middlewares/http-logs-middleware.service";
 
 @Module({
   imports: [
@@ -86,23 +86,6 @@ import { GoogleAuthenticationModule } from './google-authentication/google-authe
         abortEarly: true,
       },
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
-        //entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        //entities: [__dirname + '/../**/*.entity{.ts,.js}', 'dist/**/*.entity.js'],
-        autoLoadEntities: true,
-        synchronize: true,
-        namingStrategy: new SnakeNamingStrategy()
-      })
-    }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       imports: [ConfigModule],
@@ -129,6 +112,7 @@ import { GoogleAuthenticationModule } from './google-authentication/google-authe
       inject: [ConfigService],
     }),
     ScheduleModule.forRoot(),
+    DatabaseModule,
     PostsModule,
     UsersModule,
     AuthenticationModule,
@@ -151,8 +135,15 @@ import { GoogleAuthenticationModule } from './google-authentication/google-authe
     EmailConfirmationModule,
     SmsModule,
     GoogleAuthenticationModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService, Timestamp],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+        .apply(HttpLogsMiddleware)
+        .forRoutes('*');
+  }
+}

@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { json } from 'body-parser';
-import RequestWithRawBody from '../stripe-webhook/interfaces/request-with-raw-body.interface';
+import RequestWithRawBody from '../../stripe-webhook/interfaces/request-with-raw-body.interface';
 
 function rawBodyMiddleware() {
     return json({
