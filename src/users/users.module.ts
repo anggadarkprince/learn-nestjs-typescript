@@ -7,12 +7,14 @@ import {FilesModule} from "../files/files.module";
 import { UsersController } from './users.controller';
 import {StripeModule} from "../stripe/stripe.module";
 import {DatabaseFilesModule} from "../database-files/database-files.module";
+import {LocalFilesModule} from "../local-files/local-files.module";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User, Address]),
         FilesModule,
         DatabaseFilesModule,
+        LocalFilesModule,
         StripeModule
     ],
     providers: [UsersService],

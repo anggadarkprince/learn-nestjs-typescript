@@ -14,6 +14,7 @@ import {FilesService} from "../files/files.service";
 import * as bcrypt from 'bcrypt';
 import {StripeService} from "../stripe/stripe.service";
 import {DatabaseFilesService} from "../database-files/database-files.service";
+import {LocalFilesService} from "../local-files/local-files.service";
 
 @Injectable()
 export class UsersService {
@@ -22,6 +23,7 @@ export class UsersService {
         private usersRepository: Repository<User>,
         private readonly filesService: FilesService,
         private readonly databaseFilesService: DatabaseFilesService,
+        private localFilesService: LocalFilesService,
         private connection: Connection,
         private stripeService: StripeService
     ) {
@@ -182,6 +184,12 @@ export class UsersService {
         return cover;
     }
 
+    async addStatus(userId: number, fileData: LocalFileDto) {
+        const status = await this.localFilesService.saveLocalFileData(fileData);
+        await this.usersRepository.update(userId, {
+            status
+        })
+    }
 
     async addPrivateFile(userId: number, imageBuffer: Buffer, filename: string) {
         return this.filesService.uploadPrivateFile(imageBuffer, userId, filename);

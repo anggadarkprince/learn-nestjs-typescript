@@ -13,6 +13,7 @@ import Post from "../../posts/entities/post.entity";
 import PublicFile from "../../files/entities/public-file.entity";
 import PrivateFile from "../../files/entities/private-file.entity";
 import DatabaseFile from "../../database-files/entities/database-file.entity";
+import LocalFile from "../../local-files/entities/local-file.entity";
 
 @Entity({name: 'users'})
 class User {
@@ -52,7 +53,7 @@ class User {
     })
     public avatar?: PublicFile;
 
-    @JoinColumn({name: 'cover_Id'})
+    @JoinColumn({name: 'cover_id'})
     @OneToOne(
         () => DatabaseFile,
         {
@@ -61,6 +62,15 @@ class User {
         }
     )
     public cover?: DatabaseFile;
+
+    @JoinColumn({ name: 'status_id' })
+    @OneToOne(
+        () => LocalFile,
+        {
+            nullable: true
+        }
+    )
+    public status?: LocalFile;
 
     @OneToOne(() => Address, {
         eager: true, // duplicate alias relation address_id need to be change another or using strategy

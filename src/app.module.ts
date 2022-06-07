@@ -35,6 +35,7 @@ import { DatabaseModule } from './database/database.module';
 import { LoggerModule } from './logger/logger.module';
 import { HealthModule } from './health/health.module';
 import { DatabaseFilesModule } from './database-files/database-files.module';
+import { LocalFilesModule } from './local-files/local-files.module';
 import HttpLogsMiddleware from "./utils/middlewares/http-logs-middleware.service";
 
 @Module({
@@ -140,6 +141,7 @@ import HttpLogsMiddleware from "./utils/middlewares/http-logs-middleware.service
     LoggerModule,
     HealthModule,
     DatabaseFilesModule,
+    LocalFilesModule,
   ],
   controllers: [AppController],
   providers: [AppService, Timestamp],
