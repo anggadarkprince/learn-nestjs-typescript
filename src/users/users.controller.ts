@@ -24,6 +24,13 @@ export class UsersController {
         return this.usersService.deleteAvatarWithQueryRunner(request.user.id);
     }
 
+    @Post('cover')
+    @UseGuards(JwtAuthenticationGuard)
+    @UseInterceptors(FileInterceptor('file'))
+    async addCover(@Req() request: RequestWithUser, @UploadedFile() file: Express.Multer.File) {
+        return this.usersService.addCover(request.user.id, file.buffer, file.originalname);
+    }
+
     @Get('files')
     @UseGuards(JwtAuthenticationGuard)
     async getAllPrivateFiles(@Req() request: RequestWithUser) {

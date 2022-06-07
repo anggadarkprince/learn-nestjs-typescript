@@ -13,6 +13,7 @@ import CreateUserDto from "./dto/create-user.dto";
 import {FilesService} from "../files/files.service";
 import * as bcrypt from 'bcrypt';
 import {StripeService} from "../stripe/stripe.service";
+import {DatabaseFilesService} from "../database-files/database-files.service";
 
 @Injectable()
 export class UsersService {
@@ -20,6 +21,7 @@ export class UsersService {
         @InjectRepository(User)
         private usersRepository: Repository<User>,
         private readonly filesService: FilesService,
+        private readonly databaseFilesService: DatabaseFilesService,
         private connection: Connection,
         private stripeService: StripeService
     ) {
@@ -171,6 +173,15 @@ export class UsersService {
             }
         }
     }
+
+    async addCover(userId: number, imageBuffer: Buffer, filename: string) {
+        const cover = await this.databaseFilesService.uploadDatabaseFile(imageBuffer, filename);
+        await this.usersRepository.update(userId, {
+            cover
+        });
+        return cover;
+    }
+
 
     async addPrivateFile(userId: number, imageBuffer: Buffer, filename: string) {
         return this.filesService.uploadPrivateFile(imageBuffer, userId, filename);

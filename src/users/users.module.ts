@@ -6,11 +6,13 @@ import Address from "./entities/address.entity";
 import {FilesModule} from "../files/files.module";
 import { UsersController } from './users.controller';
 import {StripeModule} from "../stripe/stripe.module";
+import {DatabaseFilesModule} from "../database-files/database-files.module";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User, Address]),
         FilesModule,
+        DatabaseFilesModule,
         StripeModule
     ],
     providers: [UsersService],
