@@ -68,6 +68,7 @@ class User {
     @OneToOne(
         () => LocalFile,
         {
+            eager: true,
             nullable: true
         }
     )
