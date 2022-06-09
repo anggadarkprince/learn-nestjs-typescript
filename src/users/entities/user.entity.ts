@@ -14,6 +14,7 @@ import PublicFile from "../../files/entities/public-file.entity";
 import PrivateFile from "../../files/entities/private-file.entity";
 import DatabaseFile from "../../database-files/entities/database-file.entity";
 import LocalFile from "../../local-files/entities/local-file.entity";
+import Role from "../enums/role.enum";
 
 @Entity({name: 'users'})
 class User {
@@ -96,6 +97,13 @@ class User {
 
     @Column({nullable: true})
     public monthlySubscriptionStatus?: string;
+
+    @Column({
+        type: 'enum',
+        enum: Role,
+        default: Role.User
+    })
+    public roles: Role
 
     @CreateDateColumn({name: 'created_at'})
     created_at: Date;

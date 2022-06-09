@@ -4,7 +4,7 @@ import {
     Controller,
     Delete,
     Get,
-    Param,
+    Param, ParseIntPipe,
     Post,
     Put, Query,
     Req,
@@ -22,6 +22,8 @@ import {GET_POSTS_CACHE_KEY} from "./constants/post-cache-key.constant";
 import {HttpCacheInterceptor} from "./interceptors/http-cache.interceptor";
 import JwtTwoFactorGuard from "../authentication/guards/jwt-two-factor.guard";
 import {EmailConfirmationGuard} from "../email-confirmation/guards/email-confirmation.guard";
+import RoleGuard from "../users/guards/role.guard";
+import Role from "../users/enums/role.enum";
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -44,7 +46,7 @@ export default class PostsController {
     }
 
     @Get(':id')
-    getPostById(@Param() { id }: FindOneParams) {
+    getPostById(@Param('id', ParseIntPipe) id: number) {
         return this.postsService.getPostById(Number(id));
     }
 
@@ -62,7 +64,7 @@ export default class PostsController {
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthenticationGuard)
+    @UseGuards(RoleGuard(Role.Admin))
     async deletePost(@Param() { id }: FindOneParams) {
         return this.postsService.deletePost(Number(id));
     }

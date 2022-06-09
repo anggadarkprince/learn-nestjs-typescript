@@ -1,4 +1,5 @@
 import User from '../../users/entities/user.entity';
+import Role from "../../users/enums/role.enum";
 
 const mockedUser: User = {
     id: 1,
@@ -15,6 +16,7 @@ const mockedUser: User = {
     isEmailConfirmed: false,
     isPhoneNumberConfirmed: false,
     isRegisteredWithGoogle: false,
+    roles: Role.User,
     created_at: null,
     updated_at: null
 }
