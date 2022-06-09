@@ -3,9 +3,11 @@ import {ProductsService} from "./products.service";
 import JwtAuthenticationGuard from "../authentication/guards/jwt-authentication.guard";
 import CreateProductDto from "./dto/create-product.dto";
 import {EmailConfirmationGuard} from "../email-confirmation/guards/email-confirmation.guard";
+import {ApiTags} from "@nestjs/swagger";
 
 @Controller('products')
 @UseInterceptors(ClassSerializerInterceptor)
+@ApiTags('Products')
 export class ProductsController {
     constructor(
         private readonly productsService: ProductsService

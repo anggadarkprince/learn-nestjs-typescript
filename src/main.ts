@@ -8,6 +8,7 @@ import {ConfigService} from "@nestjs/config";
 import rawBodyMiddleware from './utils/middlewares/raw-body.middleware';
 import getLogLevels from "./utils/get-log-levels";
 import CustomLogger from "./logger/custom-logger";
+import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -37,6 +38,17 @@ async function bootstrap() {
 
   app.use(rawBodyMiddleware());
 
-  await app.listen(3000);
+  const swaggerConfig = new DocumentBuilder()
+      .setTitle('API with NestJS')
+      .setDescription('API developed throughout the API with NestJS course')
+      .setVersion('1.0')
+      .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api', app, document);
+
+  const port = configService.get('PORT') ?? 3000;
+
+  await app.listen(port);
 }
 bootstrap();

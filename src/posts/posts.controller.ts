@@ -24,9 +24,11 @@ import JwtTwoFactorGuard from "../authentication/guards/jwt-two-factor.guard";
 import {EmailConfirmationGuard} from "../email-confirmation/guards/email-confirmation.guard";
 import RoleGuard from "../users/guards/role.guard";
 import Role from "../users/enums/role.enum";
+import {ApiNotFoundResponse, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
+@ApiTags('Posts')
 export default class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
@@ -46,6 +48,22 @@ export default class PostsController {
     }
 
     @Get(':id')
+    @ApiParam({
+        name: 'id',
+        required: true,
+        description: 'Should be an id of a post that exists in the database',
+        type: Number
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'A post has been successfully fetched',
+        type: Post
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'A post with given id does not exist.'
+    })
+    //@ApiNotFoundResponse()
     getPostById(@Param('id', ParseIntPipe) id: number) {
         return this.postsService.getPostById(Number(id));
     }

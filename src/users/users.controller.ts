@@ -23,10 +23,13 @@ import {join} from 'path';
 import * as etag from 'etag';
 import * as filesystem from 'fs';
 import * as util from 'util';
+import {ApiBody, ApiConsumes, ApiTags} from "@nestjs/swagger";
+import FileUploadDto from "./dto/file-upload.dto";
 
 const readFile = util.promisify(filesystem.readFile);
 
 @Controller('users')
+@ApiTags('Users')
 export class UsersController {
     constructor(private readonly usersService: UsersService, private readonly localFilesService: LocalFilesService) {
     }
@@ -66,6 +69,11 @@ export class UsersController {
             fileSize: Math.pow(1024, 2) // 1MB
         }
     }))
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        description: 'A new avatar for the user',
+        type: FileUploadDto,
+    })
     async addImageStatus(@Req() request: RequestWithUser, @UploadedFile() file: Express.Multer.File) {
         return this.usersService.addStatus(request.user.id, {
             path: file.path,

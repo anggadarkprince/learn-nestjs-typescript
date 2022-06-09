@@ -20,16 +20,20 @@ import {UsersService} from "../users/users.service";
 import JwtRefreshGuard from "./guards/jwt-refresh.guard";
 import {EmailConfirmationService} from "../email-confirmation/email-confirmation.service";
 import {SmsService} from "../sms/sms.service";
+import {ApiBody, ApiTags} from "@nestjs/swagger";
+import {LoginDto} from "./dto/login.dto";
 
 @Controller('authentication')
 @UseInterceptors(ClassSerializerInterceptor)
+@ApiTags('Auth')
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
         private readonly usersService: UsersService,
         private readonly emailConfirmationService: EmailConfirmationService,
         private readonly smsService: SmsService,
-    ) {}
+    ) {
+    }
 
     @Post('register')
     async register(@Body() registrationData: RegisterDto) {
@@ -42,6 +46,7 @@ export class AuthenticationController {
     @HttpCode(200)
     @UseGuards(LocalAuthenticationGuard)
     @Post('login')
+    @ApiBody({type: LoginDto})
     async login(@Req() request: RequestWithUser/*, @Res({ passthrough: true }) response: Response*/) {
         const user = request.user;
 
